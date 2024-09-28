@@ -30,6 +30,7 @@
 #include <linux/ratelimit.h>
 #include <linux/sysfs.h>
 #define CREATE_TRACE_POINTS
+#include <trace/events/error_report.h>
 #include <trace/events/exception.h>
 #include <soc/qcom/minidump.h>
 
@@ -619,6 +620,7 @@ void __warn(const char *file, int line, void *caller, unsigned taint,
 		dump_stack();
 
 	print_oops_end_marker();
+	trace_error_report_end(ERROR_DETECTOR_WARN, (unsigned long)caller);
 
 	/* Just a warning, don't kill lockdep. */
 	add_taint(taint, LOCKDEP_STILL_OK);
